@@ -1,3 +1,5 @@
+from .fields import OrderField
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -14,16 +16,19 @@ class Subject(models.Model):
         return self.title
 
 class Course(models.Model):
+
     owner = models.ForeignKey(
         User, 
         related_name='courses_created', 
         on_delete=models.CASCADE
         )
+
     subject = models.ForeignKey(
         Subject,
         related_name='courses',
         on_delete=models.CASCADE
         )
+
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     overview = models.TextField()
@@ -43,35 +48,48 @@ class Module(models.Model):
         )
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+    order = OrderField(blank=True, for_fields=['course'])
 
     def __str__(self):
-        return self.title
+        return '{}. {}'.format(self.order, self.title)
+
+    class Meta:
+        ordering = ['order']
 
 class Content(models.Model):
+
     module = models.ForeignKey(
         Module,
         related_name='contents',
         on_delete=models.CASCADE
         )
+
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
+        limit_choices_to={'model__in':(
+            'text',
+            'video',
+            'image',
+            'file'
+            )}
         )
+
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
+    order = OrderField(blank=True, for_fields=['module'])
 
     class Meta:
         ordering = ['order']
-
-    def __str__(self):
-        return self.item.title
     
 class ItemBase(models.Model):
+
     owner = models.ForeignKey(
         User,
         related_name='%(class)s_related',
         on_delete=models.CASCADE
     )
+
     title = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

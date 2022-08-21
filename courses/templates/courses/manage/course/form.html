@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     {% if object %}
@@ -9,7 +10,9 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>{% if object %}
+<div class="m-4">
+    <h1>
+        {% if object %}
             Edit course '{{ object.title }}'
         {% else %}
             Create new course
@@ -18,10 +21,11 @@
     <div class="module">
         <h2>Course info</h2>
         <form method="post">
-            {{ form.as_p }}
+            {{ form|crispy }}
             {% csrf_token %}
-            <p><input type="submit" value"Save course"></p>
+            <p><input class="btn btn-primary my-2" type="submit" value"Save course"></p>
         </form>
     </div>
+</div>
 
 {% endblock content %}

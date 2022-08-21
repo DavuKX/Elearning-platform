@@ -5,16 +5,16 @@
 {% block content %}
     <h1>My courses</h1>
 
-    <div class="module">
+    <div class="m-3">
         {% for course in object_list %}
             <div class="course-info">
                 <h3>{{ course.title }}</h3>
                 <p>
-                    <a href="{% url 'course_edit' course.id %}">Edit</a>
-                    <a href="{% url 'course_delete' course.id %}">Delete</a>
-                    <a href="{% url 'course_module_update' course.id %}">Edit modules</a>
+                    <a class="btn btn-info m-1" href="{% url 'course_edit' course.id %}">Edit</a>
+                    <a class="btn btn-danger m-1" href="{% url 'course_delete' course.id %}">Delete</a>
+                    <a class="btn btn-secondary m-1" href="{% url 'course_module_update' course.id %}">Edit modules</a>
                     {% if course.modules.count > 0 %}
-                    <a href="{% url "module_content_list" course.modules.first.id %}">Manage contents</a>
+                    <a class="btn btn-success m-1" href="{% url "module_content_list" course.modules.first.id %}">Manage contents</a>
                     {% endif %}
                 </p>
             </div>
@@ -22,7 +22,7 @@
             <p>You don't have any courses</p>
         {% endfor %}
         <p>
-            <a href="{% url 'course_create' %}" class="button">
+            <a class="btn btn-primary m-1"href="{% url 'course_create' %}" class="button">
                 Create new course
             </a>
         </p>

@@ -25,9 +25,18 @@
                         <li>
                             <a class="nav-link" aria-current="page" href="{% url 'student_course_list' %}">My courses</a>
                         </li>
+                        {% if request.user.is_superuser %}
+                            <li>
+                                <a class="nav-link" aria-current="page" href="{% url 'admin:index' %}">Admin</a>
+                            </li>
+                            <li>
+                                <a class="nav-link" aria-current="page" href="{% url 'manage_course_list' %}">Teacher</a>
+                            </li>
+                        {% endif %}
                         <li>
                             <a class="nav-link" aria-current="page" href="{% url 'logout' %}">Sign out</a>
                         </li>
+                        
                     {% else %}
                         <li>
                             <a class="nav-link" aria-current="page" href="{% url 'login' %}">Sign in</a>

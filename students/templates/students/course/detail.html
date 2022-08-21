@@ -18,9 +18,8 @@
         {% for m in object.modules.all %}
           <li data-id="{{ m.id }}">
             <a class="dropdown-item" href="{% url "student_course_detail_module" object.id m.id %}">
-                Module {{ m.order|add:1 }}
+                Module {{ m.order|add:1 }}: {{ m.title }}
               <br>
-              {{ m.title }}
             </a>
           </li>
           <li><hr class="dropdown-divider"></li>
@@ -39,8 +38,10 @@
     {% cache 1 module_contents module %}
       {% for content in module.contents.all %}
         {% with item=content.item %}
+        <hr>
           <h2>{{ item.title }}</h2>
           {{ item.render }}
+        <hr>
         {% endwith %}
       {% endfor %}
     {% endcache %}

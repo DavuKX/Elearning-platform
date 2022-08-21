@@ -9,45 +9,62 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>
+<div>
+    <h2 class="py-3 mx-2">
         {% if subject %}
             {{ subject.title }} courses
         {% else %}
             All courses
         {% endif %}
-    </h1>
-    <div class="contents">
-        <h3>Subjects</h3>
-        <ul id="modules">
+    </h2>
+    <div class="dropdown pb-4">
+        <button class="btn btn-secondary dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Subjects
+        </button>
+        <ul id="modules" class="dropdown-menu dropdown-menu-lg-end">
             <li {% if not subject %}class="selected"{% endif %}>
-                <a href="{% url 'course_list' %}">All</a>
+                <a class="dropdown-item" href="{% url 'course_list' %}">All</a>
             </li>
             {% for s in subjects %}
                 <li {% if subject == s %}class="selected"{% endif %}> 
-                    <a href="{% url 'course_list_subject' s.slug %}">
+                    <a class = "dropdown-item" href="{% url 'course_list_subject' s.slug %}">
                         {{ s.title }}
                         <br><span>{{ s.total_courses }} courses</span>
                     </a>
                 </li>
+                <li><hr class="dropdown-divider"></li>
             {% endfor %}
         </ul>
     </div>
-    <div class="module">
-        {% for course in courses %}
-            {% with subject=course.subject%}
-                <h3>
-                    <a href="{% url 'course_detail' course.slug %}">
-                        {{ course.title }}
-                    </a>
-                </h3>
-                <p>
-                    <a href="{% url 'course_list_subject' subject.slug %}">
-                        {{ subject }}
-                    </a>.
-                    {{ course.total_modules }} modules.
-                    Instructor: {{ course.owner.get_full_name }}
-                </p>
-            {% endwith %}
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+            {% for course in courses %}
+                {% with subject=course.subject%}
+                    <div class="card mx-5 my-3" style="width: 35rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a class="text-decoration-none" href="{% url 'course_detail' course.slug %}">
+                                    {{ course.title }}
+                                </a>
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                {{ course.total_modules }} modules.
+                            </h6>
+                            <p class="text">
+                                {{ course.overview|truncatechars:100 }}
+                            </p>
+                            <p class="text">
+                                Instructor: {{ course.owner.get_full_name }}
+                            </p>
+                            <a class="card-link text-decoration-none" href="{% url 'course_list_subject' subject.slug %}">
+                                {{ subject }}
+                            </a>   
+                        </div>
+                    </div>
+                {% endwith %}
         {% endfor %}
+        </div>
     </div>
+</div>
+    
 {% endblock content %}

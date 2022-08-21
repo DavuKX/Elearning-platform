@@ -28,9 +28,9 @@
                         </button>
                     </form>
                 {% else %}
-                    <button type="submit" class="btn btn-outline-info" href="{% url "student_registration" %}">
+                    <a href="{% url "student_registration" %}" class="btn btn-outline-info">
                         Register to enroll
-                    </button>
+                    </a>
                 {% endif %}
             </div>
         {% endwith %}

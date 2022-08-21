@@ -3,14 +3,23 @@
 {% block title %}My courses{% endblock title %}
 
 {% block content %}
+<div class="m-3">
     <h1>My courses</h1>
-
-    <div class="module">
+    <div class="row row-cols-1 row-cols-sm-3 row-cols-md-4 d-flex justify-content-around">
         {% for course in object_list %}
-            <h3>{{ course.title }}</h3>
-            <p><a href="{% url 'student_course_detail' course.id %}">
-                Access contents
-            </a></p>
+        <div class="card m-3">
+            <div class="card-header">
+                <h3>{{ course.title }}</h3>
+            </div>
+            <div class="card-body">
+                <p>
+                    <a class="btn btn-primary" href="{% url 'student_course_detail' course.id %}">
+                        Access contents
+                    </a>
+                </p>
+            </div>
+            
+        </div>     
         {% empty %}
             <p>
                 You are not enrolled in any course yet.
@@ -19,4 +28,5 @@
             </p>
         {% endfor %}
     </div>
+</div>
 {% endblock content %}
